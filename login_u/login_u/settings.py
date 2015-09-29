@@ -19,3 +19,6 @@ DOWNLOADER_MIDDLEWARE = [ 'scrapy.contrib.downloadermiddleware.httpauth.HttpAuth
 
 http_user = "username"
 http_pass = "password"
+
+COOKIES_ENABLED = True
+COOKIES_DEBUG = True
