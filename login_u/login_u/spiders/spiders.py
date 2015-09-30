@@ -21,7 +21,7 @@ class LinkedPySpider(InitSpider):
     def login(self, response):
         #"""Generate a login request."""
         return FormRequest.from_response(response,
-                    formdata={'session_key': 's.mahavarkar@gmail.com', 'session_password': 'Sujitvm123!'},
+                    formdata={'session_key': 'user@gmail.com', 'session_password': 'password'},
                     callback=self.check_login_response)
 
     def check_login_response(self, response):
