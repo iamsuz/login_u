@@ -50,15 +50,20 @@ class LinkedPySpider(InitSpider):
 
 class LinkedPySpider1(InitSpider):
     name = 'myspider1'
-    allowed_domains = ['linkedin.com']
     login_page = 'https://www.linkedin.com/uas/login'
    # start_urls = ["http://www.linkedin.com/csearch/results?type=companies&keywords=&pplSearchOrigin=GLHD&pageKey=member-home&search=Search#facets=pplSearchOrigin%3DFCTD%26keywords%3D%26search%3DSubmit%26facet_CS%3DC%26facet_I%3D80%26openFacets%3DJO%252CN%252CCS%252CNFR%252CF%252CCCR%252CI"]
     start_urls = ["http://www.linkedin.com/csearch/results"]
 
-    rules = (
-        Rule(SgmlLinkExtractor(allow=r'-\w+.html$'),
-             callback='parse_item', follow=True),
-    )
+    def __init__(self, username, password, *args, **kwargs):
+        global rules
+        # query = query.replace(' ','-')
+        self.rules = (Rule(SgmlLinkExtractor(allow=('/'+'*')), callback='parse_item',follow = True),)
+        super(LinkedPySpider1, self).__init__(*args, **kwargs)
+        self.allowed_domains = ['linkedin.com']
+        self.start_urls = [kwargs.get('start_url')]
+        print(self.start_urls)
+        self.username=username
+        self.password=password
 
     def start_requests(self):
         yield Request(
@@ -77,8 +82,10 @@ class LinkedPySpider1(InitSpider):
 
     def login(self, response):
         #"""Generate a login request."""
+        username=self.username
+        password=self.password
         return FormRequest.from_response(response,
-                formdata={'session_key': 'user@gmail.com', 'session_password': 'PASSWORD'},
+                formdata={'session_key': username, 'session_password': password},
                 callback=self.check_login_response)
 
     def check_login_response(self, response):
